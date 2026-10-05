@@ -2,6 +2,7 @@ package com.humanvision.checkbox.service.extractor;
 
 import com.humanvision.checkbox.model.domain.DocumentPage;
 import com.humanvision.checkbox.model.domain.InvalidDocumentException;
+import com.humanvision.checkbox.service.logging.RejectedInputLog;
 import com.humanvision.checkbox.service.config.PdfLimits;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -39,6 +40,7 @@ public class PdfPageRasterizer {
             logRasterized(pageCount, startNanos);
             return pages;
         } catch (IOException | RuntimeException exception) {
+            RejectedInputLog.warn(log, "pdf could not be rasterized", exception);
             throw new InvalidDocumentException("PDF is corrupt or could not be read.");
         }
     }

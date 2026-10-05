@@ -3,6 +3,7 @@ package com.humanvision.checkbox.service.validator;
 import com.humanvision.checkbox.model.contract.FileValidator;
 import com.humanvision.checkbox.model.domain.FileType;
 import com.humanvision.checkbox.model.domain.InvalidDocumentException;
+import com.humanvision.checkbox.service.logging.RejectedInputLog;
 import com.humanvision.checkbox.service.config.ImageLimits;
 import com.humanvision.checkbox.service.config.PdfLimits;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class PdfFileValidator implements FileValidator {
         } catch (InvalidDocumentException exception) {
             throw exception;
         } catch (IOException | RuntimeException exception) {
+            RejectedInputLog.warn(log, "pdf could not be read", exception);
             throw new InvalidDocumentException("PDF is corrupt or could not be read.");
         }
     }
