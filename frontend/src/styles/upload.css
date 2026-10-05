@@ -1,0 +1,47 @@
+.dropzone {
+  display: grid; justify-items: center; gap: 6px; padding: 36px 20px; text-align: center; cursor: pointer;
+  border: 2px dashed var(--border); border-radius: 12px; background: var(--surface-muted);
+  transition: border-color 0.15s, background 0.15s;
+}
+.dropzone:hover, .dropzone.is-dragging, .dropzone:focus-within { border-color: var(--accent); background: var(--accent-soft); }
+.dropzone-icon {
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent);
+}
+.dropzone-title { font-size: 1.05rem; }
+.dropzone-title strong { color: var(--accent); }
+.dropzone-hint { color: var(--text-muted); font-size: 0.9rem; }
+
+.file-chip {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--surface-muted);
+}
+.file-chip-icon {
+  flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-soft); color: var(--accent);
+}
+.file-chip-text { min-width: 0; display: grid; }
+.file-chip-text strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-chip-text small { color: var(--text-muted); }
+.icon-button {
+  margin-left: auto; flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px;
+  border: 0; background: transparent; color: var(--text-muted); cursor: pointer;
+}
+.icon-button:hover:not(:disabled) { background: var(--border); color: var(--text); }
+.icon-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.upload-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.primary-button {
+  display: inline-flex; align-items: center; gap: 10px; padding: 11px 22px; border: 0; border-radius: 10px;
+  background: var(--accent); color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+.primary-button:hover:not(:disabled) { background: var(--accent-hover); }
+.primary-button:active:not(:disabled) { transform: translateY(1px); }
+.primary-button:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+.status { color: var(--text-muted); font-size: 0.92rem; }
+.spinner {
+  width: 16px; height: 16px; border: 2px solid rgba(255, 255, 255, 0.4); border-top-color: #fff; border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

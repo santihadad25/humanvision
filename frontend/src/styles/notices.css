@@ -1,0 +1,10 @@
+.notice {
+  display: flex; gap: 12px; align-items: flex-start; margin-top: 16px; padding: 14px 16px;
+  border-radius: 12px; border: 1px solid var(--border);
+}
+.notice svg { flex: none; margin-top: 2px; }
+.notice p { margin: 4px 0 0; color: var(--text-muted); font-size: 0.95rem; }
+.notice-info { background: var(--info-soft); color: var(--text); }
+.notice-info svg { color: var(--accent); }
+.notice-error { background: var(--error-soft); border-color: var(--unchecked); }
+.notice-error svg { color: var(--unchecked); }

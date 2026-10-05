@@ -1,0 +1,10 @@
+@media (max-width: 720px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .app-header { padding-top: 24px; }
+  .app-header h1 { font-size: 1.35rem; }
+  .stage { padding: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
+}

@@ -1,0 +1,38 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app { min-height: 100vh; display: flex; flex-direction: column; }
+main { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 20px 32px; flex: 1; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.app-header {
+  width: 100%; max-width: 1040px; margin: 0 auto; padding: 36px 20px 24px;
+  display: flex; gap: 16px; align-items: center;
+}
+.app-logo {
+  flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px;
+  background: var(--accent); color: #fff; box-shadow: var(--shadow);
+}
+.app-header h1 { margin: 0; font-size: 1.65rem; letter-spacing: -0.02em; line-height: 1.2; }
+.app-header p { margin: 4px 0 0; color: var(--text-muted); }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.upload-card { padding: 20px; display: grid; gap: 16px; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.app-footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 8px 20px 28px; }
