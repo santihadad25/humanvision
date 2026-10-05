@@ -1,0 +1,49 @@
+server:
+  port: 8080
+  shutdown: graceful
+  tomcat:
+    max-swallow-size: 2MB
+    threads:
+      max: 8
+    accept-count: 50
+    connection-timeout: 10s
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+      file-size-threshold: 1MB
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+app:
+  files:
+    allowed-types: png,jpeg,pdf
+  image:
+    max-dimension: 12000
+    max-pixels: 50000000
+  detection:
+    min-box-size: 20
+    max-box-size: 100
+    min-outline-coverage: 1.0
+    checked-ink-share: 0.07
+    min-corner-ink-share: 0.4
+    side-clearance: 3
+    max-side-ink-share: 0.02
+  preprocessing:
+    binarization: both
+    local-window: 25
+    local-delta: 12
+    upscale-factors: 1,2,3,4
+    enough-boxes: 5
+    max-working-pixels: 40000000
+  pdf:
+    max-pages: 20
+    dpi: 300
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
