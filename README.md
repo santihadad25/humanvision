@@ -1,11 +1,33 @@
 # Checkbox Detection
 
-Detects the checkboxes of a document image or PDF and tells which ones are checked.
+Forms such as appraisal reports are full of checkboxes, and finding out by hand which ones are ticked is slow and
+error-prone. This project does it automatically: you give it a PDF, a scan or a screenshot of a form, and it finds the
+checkboxes and tells which ones are checked. For each checkbox it returns its position on the page and whether it is
+checked.
+
+## Live demo
+
+**<https://shadad-take-home-deploy.vercel.app/>**
+
+The project is deployed there, with both parts on the same host:
+
+- **Single-page app** (React): a form where you upload a PDF, PNG or JPEG. It sends the file to the backend and uses the
+  list of checkboxes it gets back to mark them on top of the document, so the result can be checked by eye. The PDFs in
+  [`samples/`](samples) are a good way to start.
+- **Backend** (REST API in Java 21 and Spring Boot): detects the checkboxes with classic image analysis, with no
+  machine-learning model. The app calls it under `/api`, and it can be called directly too, at
+  `https://shadad-take-home-deploy.vercel.app/api/detect` and `/api/v2/detect` (the requests are in [Try it](#try-it)).
+
+The deployment is built from this repository (`vercel.json` and `backend/Dockerfile.vercel`). Compared with a local run,
+uploads are limited to 4 MB instead of 10 MB (Vercel Functions reject larger request bodies), and the backend starts on
+demand, so the first upload after a period without traffic can take over ten seconds; the next ones are faster.
+
 Documentation (architecture, pipeline, quality, improvements): `Readme.pdf`.
 
-The only requirement is **Docker with Compose v2** (`docker compose version`). Nothing else is installed on the machine.
-
 ## Start
+
+To run it on your own machine, the only requirement is **Docker with Compose v2** (`docker compose version`). Nothing
+else is installed on the machine.
 
 Backend and frontend:
 
