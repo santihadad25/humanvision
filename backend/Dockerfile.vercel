@@ -1,0 +1,45 @@
+# Backend image for Vercel (Container Images on Vercel Functions).
+# Docker Compose keeps using ./Dockerfile; this file only differs where Vercel needs it:
+#  - no BuildKit cache mounts, so it builds on any builder;
+#  - the API is served under /api, because Vercel services forward the original path (/api/v2/detect);
+#  - one request at a time, because one 20-page PDF can use most of the 2 GB a Hobby instance has;
+#  - uploads capped at 4 MB, under the 4.5 MB request body limit of Vercel Functions;
+#  - a class data sharing archive, to shorten the cold start after the instance scales to zero.
+
+FROM maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY models/pom.xml models/
+COPY service/pom.xml service/
+COPY controller/pom.xml controller/
+COPY models/src models/src
+COPY service/src service/src
+COPY controller/src controller/src
+RUN mvn -B -q package
+
+FROM eclipse-temurin:21-jre@sha256:cff19e6215689161eb6162c11b86b0c60ddf802164f2eaf48d570f8fb79a36c5
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends fontconfig fonts-dejavu-core \
+ && rm -rf /var/lib/apt/lists/* \
+ && groupadd --system --gid 1001 app \
+ && useradd --system --uid 1001 --gid app --no-create-home --shell /usr/sbin/nologin app
+WORKDIR /app
+COPY --from=build /app/controller/target/app.jar app.jar
+
+# Unpack the jar and record the classes loaded at startup (Spring Boot's CDS training run).
+# If the training run fails for any reason the image still works, only without the faster start.
+RUN java -Djarmode=tools -jar app.jar extract --destination application \
+ && rm app.jar \
+ && (java -Djava.awt.headless=true -XX:ArchiveClassesAtExit=application/app.jsa \
+          -Dspring.context.exit=onRefresh -jar application/app.jar > /dev/null 2>&1 \
+     || echo "CDS training run failed; starting without the archive")
+
+ENV SERVER_SERVLET_CONTEXT_PATH=/api \
+    SERVER_TOMCAT_THREADS_MAX=1 \
+    SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=4MB \
+    SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE=4MB
+
+USER 1001:1001
+EXPOSE 8080
+ENTRYPOINT ["java", "-Djava.awt.headless=true", "-XX:MaxRAMPercentage=75", "-XX:+ExitOnOutOfMemoryError", \
+            "-XX:SharedArchiveFile=application/app.jsa", "-Xshare:auto", "-jar", "application/app.jar"]
